@@ -1,0 +1,24 @@
+#cloud-config
+
+# set locale
+locale: en_US.UTF-8
+# set timezone
+timezone: Etc/UTC
+
+hostname: $${hostname}
+# you can also use ssh-keys with cloudinit. we use pwd for simplicity
+ssh_pwauth: True
+chpasswd:
+  list: |
+     root:linux
+  expire: False
+disable_root: false
+ssh_authorized_keys:
+ - ${ssh_pub_key}
+
+runcmd:
+  - sed -i '/PermitRootLogin/s/.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+  - systemctl restart sshd
+  - modprobe ip_vs_rr ip_vs_sh ip_vs_wrr nf_conntrack_ipv4
+
+final_message: "The system is finally up, after $$UPTIME seconds"

@@ -1,6 +1,7 @@
 *~
 .swp
 .terraform/
+commoninit.cfg
 kubic.qcow2
 terraform.log
 terraform.tfstate
